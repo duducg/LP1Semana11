@@ -27,7 +27,7 @@ namespace MyOwnCollection
             innerCol = new List<T>();
             maxCap = capacity;
         }
-    
+
         public void Add(T item)
         {
             //if full
@@ -44,17 +44,20 @@ namespace MyOwnCollection
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            innerCol.Clear();
         }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return innerCol.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            for (int i = arrayIndex; i > Count; i++)
+            {
+                array[i] = innerCol[i];
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -64,7 +67,37 @@ namespace MyOwnCollection
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            //remove item in case it exists
+            //check instance numbers
+            int numbOfItem = 0;
+            if (Contains(item))
+            {
+                numbOfItem = innerCol.Count(i => i.Equals(item));
+                //if more then one of item
+                if (numbOfItem > 1)
+                {
+                    int indexToRemove = Count;
+                    foreach (T itemToRemove in innerCol)
+                    {
+                        if (itemToRemove.Equals(item))
+                        {
+                            if(innerCol.IndexOf(itemToRemove) < indexToRemove)
+                            {
+                                indexToRemove = innerCol.IndexOf(itemToRemove);
+                            }
+                             
+                        }
+                        
+                    }
+                    innerCol.RemoveAt(indexToRemove);
+                    return true;
+
+                    
+                } 
+                else innerCol.RemoveAt(innerCol.IndexOf(item));
+                return true;
+            }
+            else return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
