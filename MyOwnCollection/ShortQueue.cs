@@ -8,8 +8,9 @@ namespace MyOwnCollection
 {
     public class ShortQueue<T> : ICollection<T>
     {
-        private T[] innerCol;//use this to keep track of internal count
-        public int Count => innerCol.Length;
+        private List<T> innerCol;//use this to keep track of internal count
+        private int maxCap; //this number dictates how many items allowed int
+        public int Count => innerCol.Count;
         public bool IsReadOnly
         {
             get { return false; }//if you change state, its false. So always
@@ -17,18 +18,28 @@ namespace MyOwnCollection
         //Init with 5 slots
         public ShortQueue()
         {
-            innerCol = new T[5];
+            innerCol = new List<T>();
+            maxCap = 5;
         }
-        //init with costum slots
+        //init with input slots
         public ShortQueue(int capacity)
         {
-            innerCol = new T[capacity];
+            innerCol = new List<T>();
+            maxCap = capacity;
         }
-
-
+    
         public void Add(T item)
         {
-            throw new NotImplementedException();
+            //if full
+            if (Count == maxCap)
+            {
+                //First remove oldest (last index)
+                innerCol.RemoveAt(innerCol.Count-1);
+                //Adds new item
+                innerCol.Add(item);
+                
+            }
+            else innerCol.Add(item);
         }
 
         public void Clear()
